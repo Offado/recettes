@@ -5,7 +5,7 @@
  * ces données doivent être testées et vérifiées.
  */
 
-// Avant la soumission
+
 $postData = $_POST;
 
 if (
@@ -18,24 +18,13 @@ if (
     return;
 } 
 
-
-// Après la soumission
-// $getData = $_GET;
-
-// if (
-//     !isset($getData['email']) // cette écriture veut dire si la variable n'existe ou est null alors affiche le message de echo 
-//     || !filter_var($getData['email'], FILTER_VALIDATE_EMAIL)
-//     || empty($getData['message'])
-//     || trim($getData['message']) === ''
-// ) {
-//     echo('Il faut un email et un message valides pour soumettre le formulaire.');
-//     return;
-// }
-
 ?>
 
 
 <?php 
+// Variable booléenne permettant de traduire un fichier chargé en un message de réception
+$isFileLoaded = false;
+
 // Testons si le fichier a bien été envoyé et si il n'y a pas d'erreur
 if (isset($_FILES['screenshot']) && $_FILES['screenshot']['error'] == 0) {
     // Testons, si le fichier est trop volumineux
@@ -62,6 +51,7 @@ if (isset($_FILES['screenshot']) && $_FILES['screenshot']['error'] == 0) {
 
     // On peut valider le fichier et le stocker définitivement
     move_uploaded_file($_FILES['screenshot']['tmp_name'], $path . basename($_FILES['screenshot']['name']));
+    $isFileLoaded = true;
 }
 ?>
 
@@ -85,8 +75,11 @@ if (isset($_FILES['screenshot']) && $_FILES['screenshot']['error'] == 0) {
                 <h5 class="card-title">Rappel de vos informations</h5>
                 <p class="card-text"><b>Email</b> : <?php echo($postData['email']); ?></p>
                 <p class="card-text"><b>Message</b> : <?php echo(strip_tags($postData['message'])); ?></p>
-                <!-- <p class="card-text"><b>Email</b> : <?php echo($getData['email']); ?></p>
-                <p class="card-text"><b>Message</b> : <?php echo($getData['message']); ?></p> -->
+                <?php if ($isFileLoaded) : ?>
+                    <div class="alert alert-success" role="alert">
+                        L'envoi a bien été effectué
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>

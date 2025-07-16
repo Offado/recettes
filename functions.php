@@ -36,3 +36,12 @@
         return $validRecipes;
     }
 ?>
+
+<!-- Redirige l'utilisateur vers une autre page -->
+<?php
+function redirectToUrl(string $url): never
+{
+    header("Location: {$url}");
+    exit();
+}
+?>
