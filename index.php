@@ -1,8 +1,6 @@
-<!-- Fonction qui génère une erreur -->
-<?php session_start() ?>
-
 <!-- Inclusions des fonctions et variables -->
 <?php 
+    session_start();
     require_once(__DIR__ . '/functions.php');
     require_once(__DIR__ . '/variables.php');
 ?>
@@ -23,14 +21,18 @@
         <br />
 
         <h1>Liste des recettes</h1>
-        <!-- Boucle sur les recettes -->
-         <?php foreach (getRecipes($recipes) as $recipe): ?>
-            <article>
-                <h3><?php echo $recipe['title']; ?></h3>
-                <div><?php echo $recipe['recipe']; ?></div>
-                <i><?php echo  displayAuthor($recipe['author'], $users); ?></i>
-            </article>
-         <?php endforeach ?>
+        <!-- Formulaire de connexion -->
+        <?php require_once(__DIR__ . '/login.php'); ?>
+
+        <?php if (isset($loggedUser)) : ?>
+            <?php foreach (getRecipes($recipes) as $recipe) : ?>
+                <article>
+                    <h3><?php echo $recipe['title']; ?></h3>
+                    <div><?php echo $recipe['recipe']; ?></div>
+                    <i><?php echo displayAuthor($recipe['author'], $users); ?></i>
+                </article>
+            <?php endforeach ?>
+        <?php endif; ?>
 
          <br />
 
