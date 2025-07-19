@@ -21,14 +21,20 @@ if (!isset($_SESSION['LOGGED_USER']['user_id'])) {
 if (
     !isset($postData['comment']) ||
     !isset($postData['recipe_id']) ||
-    !is_numeric($postData['recipe_id'])
+    !is_numeric($postData['recipe_id']) ||
+    !is_numeric($postData['review'])
 ) {
-    echo('Le commentaire est invalide.');
+    echo('Le commentaire et la note sont invalides.');
     return;
 }
 
 $comment = trim(strip_tags($postData['comment']));
 $recipeId = (int)$postData['recipe_id'];
+
+if ($review < 1 || $review > 5) {
+    echo 'La note doit être comprise entre 1 et 5';
+    return;
+}
 
 if ($comment === '') {
     echo 'Le commentaire ne peut pas être vide.';
@@ -40,6 +46,7 @@ $insertRecipe->execute([
     'comment' => $comment,
     'recipe_id' => $recipeId,
     'user_id' => $_SESSION['LOGGED_USER']['user_id'],
+    'review' => $review,
 ]);
 ?>
 
@@ -63,6 +70,7 @@ $insertRecipe->execute([
 
         <div class="card">
             <div class="card-body">
+                <p class="card-text"><b>Note</b> : <?php echo($review); ?> / 5</p>
                 <p class="card-text"><b>Votre commentaire</b> : <?php echo strip_tags($comment); ?></p>
             </div>
         </div>
