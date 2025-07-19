@@ -1,5 +1,7 @@
 <?php 
 session_start();
+require_once(__DIR__ . '/config/mysql.php');
+require_once(__DIR__ . '/dataconnect.php');
 require_once(__DIR__ . '/functions.php');
 require_once(__DIR__ . '/variables.php');
 
